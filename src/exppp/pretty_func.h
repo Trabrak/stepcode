@@ -4,7 +4,7 @@
 #include <express/alg.h>
 
 char *FUNCto_string(Function f);
-void FUNC_out(Function fn, int level);
+void FUNC_out(Function fn, size_t level);
 void FUNCout(Function f);
 int FUNCto_buffer(Function e, char *buffer, int length);
 

@@ -341,7 +341,7 @@ buf_concat(struct Buf *dest, const struct Buf *src)
 
 /* Appends n characters in str to buf. */
 struct Buf *
-buf_strnappend(struct Buf *buf, const char *str, int n)
+buf_strnappend(struct Buf *buf, const char *str, size_t n)
 {
     buf_append(buf, str, n + 1);
 

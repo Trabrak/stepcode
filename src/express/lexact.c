@@ -290,10 +290,9 @@ int SCANprocess_identifier_or_keyword(const char *yytext)
     char *test_string, * dest;
     const char *src;
     struct keyword_entry *k;
-    int len;
 
     /* make uppercase copy */
-    len = strlen(yytext);
+    size_t len = strlen(yytext);
     dest = test_string = (char *)sc_malloc(len + 1);
     for(src = yytext; *src; src++, dest++) {
         *dest = (islower(*src) ? toupper(*src) : *src);
@@ -408,7 +407,7 @@ void SCANsave_comment(const char *yytext)
 
 bool SCANread(void)
 {
-    int     numRead;
+    size_t     numRead;
     bool done;
 
     do {

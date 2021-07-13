@@ -76,7 +76,7 @@ void Schema::GenerateExpress(ostream &out) const
     out << endl << "(* ////////////// ENTITY Definitions *)" << endl;
     GenerateEntitiesExpress(out);
 
-    int count, i;
+    size_t count, i;
     if(_global_rules != 0) {
         out << endl << "(* *************RULES************* *)" << endl;
         count = _global_rules->Count();

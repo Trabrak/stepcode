@@ -6,9 +6,9 @@
 char *TYPEbody_to_string(Type t);
 char *TYPEhead_to_string(Type t);
 char *TYPEto_string(Type t);
-void TYPE_body_out(Type t, int level);
-void TYPE_head_out(Type t, int level);
-void TYPE_out(Type t, int level);
+void TYPE_body_out(Type t, size_t level);
+void TYPE_head_out(Type t, size_t level);
+void TYPE_out(Type t, size_t level);
 void TYPEbody_out(Type t);
 int TYPEbody_to_buffer(Type t, char *buffer, int length);
 void TYPEhead_out(Type t);

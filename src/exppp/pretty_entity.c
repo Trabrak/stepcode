@@ -14,10 +14,10 @@
 #include "pretty_type.h"
 #include "pretty_entity.h"
 
-void ENTITY_out(Entity e, int level)
+void ENTITY_out(Entity e, size_t level)
 {
     const unsigned int EXPLICIT = 0, DERIVED = 1;
-    int linelen = exppp_linelength;
+    size_t linelen = exppp_linelength;
     bool first_time = true;
 
     first_newline();
@@ -78,10 +78,9 @@ void ENTITY_out(Entity e, int level)
     tail_comment(e->symbol.name);
 }
 
-void ENTITYunique_out(Linked_List u, int level)
+void ENTITYunique_out(Linked_List u, size_t level)
 {
     int i;
-    int max_indent;
     Symbol *sym;
 
     if(!u) {
@@ -91,11 +90,10 @@ void ENTITYunique_out(Linked_List u, int level)
     raw("%*sUNIQUE\n", level, "");
 
     /* pass 1 */
-    max_indent = 0;
+    size_t max_indent = (size_t)0;
     LISTdo(u, list, Linked_List) {
         if(0 != (sym = (Symbol *)LISTget_first(list))) {
-            int length;
-            length = strlen(sym->name);
+            size_t length = strlen(sym->name);
             if(length > max_indent) {
                 max_indent = length;
             }
@@ -130,16 +128,13 @@ void ENTITYunique_out(Linked_List u, int level)
     LISTod
 }
 
-void ENTITYinverse_out(Linked_List attrs, int level)
+void ENTITYinverse_out(Linked_List attrs, size_t level)
 {
-    int max_indent;
-
     /* pass 1: calculate length of longest attr name */
-    max_indent = 0;
+    size_t max_indent = 0;
     LISTdo(attrs, v, Variable) {
         if(v->inverse_symbol) {
-            int length;
-            length = strlen(v->name->symbol.name);
+            size_t length = strlen(v->name->symbol.name);
             if(length > max_indent) {
                 max_indent = length;
             }
@@ -178,12 +173,11 @@ void ENTITYinverse_out(Linked_List attrs, int level)
     LISTod
 }
 
-void ENTITYattrs_out(Linked_List attrs, int derived, int level)
+void ENTITYattrs_out(Linked_List attrs, int derived, size_t level)
 {
-    int max_indent;
+    size_t max_indent = (size_t)0;
 
     /* pass 1: calculate length of longest attr name */
-    max_indent = 0;
     LISTdo(attrs, v, Variable) {
         if(v->inverse_symbol) {
             continue;
@@ -217,11 +211,10 @@ void ENTITYattrs_out(Linked_List attrs, int derived, int level)
             continue;
         }
         if((derived && v->initializer) || (!derived && !v->initializer)) {
-            int spaces;
             /* print attribute name */
             raw("%*s", level, "");
             EXPR_out(v->name, 0);
-            spaces = level + max_indent + 2 - curpos;
+            size_t spaces = level + max_indent + 2 - curpos;
             if(spaces < 0) {
                 spaces = 0;
             }
@@ -260,7 +253,7 @@ int ENTITYto_buffer(Entity e, char *buffer, int length)
         return -1;
     }
     ENTITY_out(e, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void ENTITYout(Entity e)

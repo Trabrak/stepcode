@@ -67,12 +67,12 @@ std::string STEPfile::SetFileName(const std::string newName)
 float STEPfile::GetReadProgress() const
 {
     if(_iFileSize < 1) {
-        return -1;
+        return -1.f;
     }
     //the file is read once by ReadData1(), and again by ReadData2. Each gets 50%.
-    float percent = (static_cast<float>(_iFileCurrentPosition) / _iFileSize) * 50.0;
+    float percent = (static_cast<float>(_iFileCurrentPosition) / static_cast<float>(_iFileSize)) * 50.f;
     if(_iFileStage1Done) {
-        percent += 50;
+        percent += 50.f;
     }
     return percent;
 }
@@ -90,9 +90,9 @@ float STEPfile::GetWriteProgress() const
 {
     int total = _instances.InstanceCount();
     if(total > 0) {
-        return (static_cast<float>(_oFileInstsWritten) / total) * 100.0;
+        return (static_cast<float>(_oFileInstsWritten) / static_cast<float>(total)) * 100.f;
     } else {
-        return -1;
+        return -1.f;
     }
 }
 

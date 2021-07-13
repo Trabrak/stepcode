@@ -129,7 +129,7 @@ const char *PrettyTmpName(const char *oldname)
 /* This function is out of date DAS */
 const char *EnumName(const char *oldname)
 {
-    int j = 0;
+    size_t j = 0;
     static char newname [MAX_LEN];
     if(!oldname) {
         return ("");
@@ -146,7 +146,7 @@ const char *EnumName(const char *oldname)
 
 const char *SelectName(const char *oldname)
 {
-    int j = 0;
+    size_t j = 0;
     static char newname [MAX_LEN];
     if(!oldname) {
         return ("");

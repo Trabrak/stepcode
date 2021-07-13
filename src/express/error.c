@@ -300,7 +300,7 @@ void ERRORset_all_warnings(bool warn_only)
 
 char *ERRORget_warnings_help(const char *prefix, const char *eol)
 {
-    unsigned int sz = 2048, len, clen;
+    size_t sz = 2048, len, clen;
     char *buf, *nbuf;
     Error err;
 

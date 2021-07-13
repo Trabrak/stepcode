@@ -30,35 +30,35 @@
 #  error "PP_SMALL_BUF_SZ already defined"
 #endif
 
-void ALGscope_out(Scope s, int level);
-void ENTITYattrs_out(Linked_List attributes, int derived, int level);
-void ENTITY_out(Entity e, int level);
-void ENTITYinverse_out(Linked_List attrs, int level);
-void ENTITYunique_out(Linked_List u, int level);
-void FUNC_out(Function fn, int level);
-void PROC_out(Procedure p, int level);
-void REFout(Dictionary refdict, Linked_List reflist, char *type, int level);
-void RULE_out(Rule r, int level);
-void SCOPEalgs_out(Scope s, int level);
-void SCOPEconsts_out(Scope s, int level);
-void SCOPEentities_out(Scope s, int level);
-void SCOPElocals_out(Scope s, int level);
-void SCOPEtypes_out(Scope s, int level);
-void STMT_out(Statement s, int level);
-void STMTlist_out(Linked_List stmts, int level);
-void TYPE_out(Type t, int level);
-void TYPE_head_out(Type t, int level);
-void TYPE_body_out(Type t, int level);
-void WHERE_out(Linked_List wheres, int level);
+void ALGscope_out(Scope s, size_t level);
+void ENTITYattrs_out(Linked_List attributes, int derived, size_t level);
+void ENTITY_out(Entity e, size_t level);
+void ENTITYinverse_out(Linked_List attrs, size_t level);
+void ENTITYunique_out(Linked_List u, size_t level);
+void FUNC_out(Function fn, size_t level);
+void PROC_out(Procedure p, size_t level);
+void REFout(Dictionary refdict, Linked_List reflist, char *type, size_t level);
+void RULE_out(Rule r, size_t level);
+void SCOPEalgs_out(Scope s, size_t level);
+void SCOPEconsts_out(Scope s, size_t level);
+void SCOPEentities_out(Scope s, size_t level);
+void SCOPElocals_out(Scope s, size_t level);
+void SCOPEtypes_out(Scope s, size_t level);
+void STMT_out(Statement s, size_t level);
+void STMTlist_out(Linked_List stmts, size_t level);
+void TYPE_out(Type t, size_t level);
+void TYPE_head_out(Type t, size_t level);
+void TYPE_body_out(Type t, size_t level);
+void WHERE_out(Linked_List wheres, size_t level);
 
 Error ERROR_select_empty;
 
-const int exppp_nesting_indent = 2;       /* default nesting indent */
-const int exppp_continuation_indent = 4;  /* default nesting indent for continuation lines */
-int exppp_linelength = 130;                /* leave some room for closing parens.
+const size_t exppp_nesting_indent = 2;       /* default nesting indent */
+const size_t exppp_continuation_indent = 4;  /* default nesting indent for continuation lines */
+size_t exppp_linelength = 130;                /* leave some room for closing parens.
                                            * '\n' is not included in this count either */
-int indent2;                              /* where continuation lines start */
-int curpos;                               /* current line position (1 is first position) */
+size_t indent2;                              /* where continuation lines start */
+size_t curpos;                               /* current line position (1 is first position) */
 const int NOLEVEL = -1;
 
 
@@ -75,8 +75,8 @@ bool exppp_tail_comment = false;
 
 FILE *exppp_fp = NULL;          /* output file */
 char *exppp_buf = 0;            /* output buffer */
-int exppp_maxbuflen = 0;        /* size of expppbuf */
-unsigned int exppp_buflen = 0;  /* remaining space in expppbuf */
+size_t exppp_maxbuflen = 0;        /* size of expppbuf */
+size_t exppp_buflen = 0;  /* remaining space in expppbuf */
 char *exppp_bufp = 0;          /* pointer to write position in expppbuf,
                                  * should usually be pointing to a "\0" */
 
@@ -108,7 +108,7 @@ int count_newlines(char *s)
 /** true if last char through exp_output was a space */
 static bool printedSpaceLast = false;
 
-void exp_output(char *buf, unsigned int len)
+void exp_output(char *buf, size_t len)
 {
     FILE *fp = (exppp_fp ? exppp_fp : stdout);
 
@@ -126,7 +126,7 @@ void exp_output(char *buf, unsigned int len)
         exppp_buflen -= len;
     } else {
         /* output to file */
-        size_t out = fwrite(buf, 1, len, fp);
+        size_t out = fwrite(buf, (size_t)1, len, fp);
         if(out != len) {
             const char *err = "%s:%u - ERROR: write operation on output file failed. Wanted %u bytes, wrote %u.";
             fprintf(stderr, err, __FILE__, __LINE__, len, out);
@@ -139,7 +139,7 @@ void wrap(const char *fmt, ...)
 {
     char buf[10000];
     char *p, * start = buf;
-    int len;
+    size_t len;
     va_list args;
 
     va_start(args, fmt);
@@ -165,8 +165,8 @@ void wrap(const char *fmt, ...)
             || ((exppp_linelength == indent2) && (curpos > indent2))) {
         /* move to new continuation line */
         char line[1000];
-        sprintf(line, "\n%*s", indent2, "");
-        exp_output(line, 1 + indent2);
+        sprintf(line, "\n%zu%s", indent2, "");
+        exp_output(line, (size_t)1 + indent2);
 
         curpos = indent2;       /* reset current position */
     }
@@ -192,7 +192,7 @@ void raw(const char *fmt, ...)
 {
     char *p;
     char buf[10000];
-    int len;
+    size_t len;
     va_list args;
 
     va_start(args, fmt);
@@ -379,7 +379,7 @@ void maybeBreak(int len, bool first)
 void breakLongStr(const char *in)
 {
     const char *iptr = in, * end;
-    unsigned int inlen = strlen(in);
+    size_t inlen = strlen(in);
     bool first = true;
     /* used to ensure that we don't overrun the input buffer */
     end = in + inlen;
@@ -404,13 +404,13 @@ void breakLongStr(const char *in)
 /* Interfacing Definitions */
 
 #define BIGBUFSIZ   100000
-static int old_curpos;
+static size_t old_curpos;
 static int old_lineno;
 static bool string_func_in_use = false;
 static bool file_func_in_use = false;
 
 /** return 0 if successful */
-int prep_buffer(char *buf, int len)
+int prep_buffer(char *buf, size_t len)
 {
     /* this should never happen */
     if(string_func_in_use) {
@@ -433,7 +433,7 @@ int prep_buffer(char *buf, int len)
 }
 
 /** \return length of string */
-int finish_buffer()
+size_t finish_buffer()
 {
     exppp_buf = 0;
     curpos = old_curpos;

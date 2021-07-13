@@ -25,7 +25,7 @@ int RULEto_buffer(Rule e, char *buffer, int length)
         return -1;
     }
     RULE_out(e, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void RULEout(Rule r)
@@ -35,7 +35,7 @@ void RULEout(Rule r)
     finish_file();
 }
 
-void RULE_out(Rule r, int level)
+void RULE_out(Rule r, size_t level)
 {
     int i = 0;
     first_newline();

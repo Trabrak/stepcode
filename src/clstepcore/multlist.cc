@@ -223,7 +223,7 @@ void JoinList::setViableVal(EntNode *ents)
 bool JoinList::acceptChoice(EntNode *ents)
 {
     EntList *child;
-    int result = false;
+    bool result = false;
 
     for(child = childList; child != NULL; child = child->next) {
         if(child->viable >= MATCHSOME) {

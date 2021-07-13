@@ -10,9 +10,9 @@
 #include "pretty_stmt.h"
 #include "pretty_case.h"
 
-void CASEout(struct Case_Statement_ * c, int level)
+void CASEout(struct Case_Statement_ * c, size_t level)
 {
-    int len = 0, max_indent = 0, old_curpos = 0;
+    size_t len = 0, max_indent = 0, old_curpos = 0;
 
     raw("%*sCASE ", level, "");
     EXPR_out(c->selector, 0);
@@ -46,7 +46,7 @@ void CASEout(struct Case_Statement_ * c, int level)
     LISTdo(c->cases, ci, Case_Item) {
         if(ci->labels) {
             LISTdo_n(ci->labels, label, Expression, b) {
-                int spaces;
+                size_t spaces;
                 /* print label(s) */
                 indent2 = level + exppp_continuation_indent;
                 raw("%*s", level, "");

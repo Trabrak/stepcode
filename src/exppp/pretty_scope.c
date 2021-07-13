@@ -46,7 +46,7 @@ void SCOPEaddvars_inorder(Linked_List list, Variable v)
 
 
 /** print the rules in a scope */
-void SCOPErules_out(Scope s, int level)
+void SCOPErules_out(Scope s, size_t level)
 {
     Rule r;
     DictionaryEntry de;
@@ -75,7 +75,7 @@ void SCOPErules_out(Scope s, int level)
 }
 
 /** print the functions in a scope */
-void SCOPEfuncs_out(Scope s, int level)
+void SCOPEfuncs_out(Scope s, size_t level)
 {
     Function f;
     DictionaryEntry de;
@@ -104,7 +104,7 @@ void SCOPEfuncs_out(Scope s, int level)
 }
 
 /* print the procs in a scope */
-void SCOPEprocs_out(Scope s, int level)
+void SCOPEprocs_out(Scope s, size_t level)
 {
     Procedure p;
     DictionaryEntry de;
@@ -143,7 +143,7 @@ void SCOPEprocs_out(Scope s, int level)
  * Within each of those groups, declarations must be sorted alphabetically.
  */
 /* print the algorithms in a scope */
-void SCOPEalgs_out(Scope s, int level)
+void SCOPEalgs_out(Scope s, size_t level)
 {
     /* Supplementary Directivies 2.1.1 requires rules to be separated */
     /* might as well separate funcs and procs, too */
@@ -153,7 +153,7 @@ void SCOPEalgs_out(Scope s, int level)
 }
 
 /** output one const - used in SCOPEconsts_out, below */
-void SCOPEconst_out(Variable v, int level, size_t max_indent)
+void SCOPEconst_out(Variable v, size_t level, size_t max_indent)
 {
     size_t old_indent2;
 
@@ -175,7 +175,7 @@ void SCOPEconst_out(Variable v, int level, size_t max_indent)
     indent2 = old_indent2;
 
     if(v->initializer) {
-        int old_ll = exppp_linelength; /* so exppp_linelength can be restored */
+        size_t old_ll = exppp_linelength; /* so exppp_linelength can be restored */
         raw(" :=");
 
         /* let '[' on first line of initializer stick out so strings are aligned */
@@ -193,7 +193,7 @@ void SCOPEconst_out(Variable v, int level, size_t max_indent)
 }
 
 /** output all consts in this scope */
-void SCOPEconsts_out(Scope s, int level)
+void SCOPEconsts_out(Scope s, size_t level)
 {
     Variable v;
     DictionaryEntry de;
@@ -267,7 +267,7 @@ void SCOPElocals_order(Linked_List list, Variable v)
     LISTadd_last(list, v);
 }
 
-void SCOPElocals_out(Scope s, int level)
+void SCOPElocals_out(Scope s, size_t level)
 {
     Variable v;
     DictionaryEntry de;
@@ -338,7 +338,7 @@ void SCOPElocals_out(Scope s, int level)
 }
 
 /** print all entities in a scope */
-void SCOPEentities_out(Scope s, int level)
+void SCOPEentities_out(Scope s, size_t level)
 {
     Entity e;
     DictionaryEntry de;
@@ -366,7 +366,7 @@ void SCOPEentities_out(Scope s, int level)
 }
 
 /** print all types in a scope */
-void SCOPEtypes_out(Scope s, int level)
+void SCOPEtypes_out(Scope s, size_t level)
 {
     DictionaryEntry de;
     Type t;

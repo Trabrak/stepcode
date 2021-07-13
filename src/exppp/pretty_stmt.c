@@ -9,7 +9,7 @@
 #include "pretty_loop.h"
 #include "pretty_stmt.h"
 
-void STMT_out(Statement s, int level)
+void STMT_out(Statement s, size_t level)
 {
     bool first_time = true;
 
@@ -88,7 +88,7 @@ void STMT_out(Statement s, int level)
     }
 }
 
-void STMTlist_out(Linked_List stmts, int level)
+void STMTlist_out(Linked_List stmts, size_t level)
 {
     LISTdo(stmts, stmt, Statement)
     STMT_out(stmt, level);
@@ -111,7 +111,7 @@ int STMTto_buffer(Statement s, char *buffer, int length)
         return -1;
     }
     STMT_out(s, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void STMTout(Statement s)

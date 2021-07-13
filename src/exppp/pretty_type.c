@@ -14,7 +14,7 @@
 #include "pretty_type.h"
 
 /** print a type definition.  I.e., a TYPE statement */
-void TYPE_out(Type t, int level)
+void TYPE_out(Type t, size_t level)
 {
     first_newline();
     exppp_ref_info(&t->symbol);
@@ -37,10 +37,10 @@ void TYPE_out(Type t, int level)
 /** prints type description (preceded by a space).
  * I.e., the type of an attribute or other object
  */
-void TYPE_head_out(Type t, int level)
+void TYPE_head_out(Type t, size_t level)
 {
     if(t->symbol.name) {
-        int old_indent = indent2;
+        size_t old_indent = indent2;
         if(indent2 + (int) strlen(t->symbol.name) > exppp_linelength) {
             indent2 = (indent2 + level) / 2;
         }
@@ -61,7 +61,7 @@ void TYPEunique_or_optional_out(TypeBody tb)
     }
 }
 
-void TYPE_body_out(Type t, int level)
+void TYPE_body_out(Type t, size_t level)
 {
     bool first_time = true;
 
@@ -243,7 +243,7 @@ int TYPEto_buffer(Type t, char *buffer, int length)
         return -1;
     }
     TYPE_out(t, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void TYPEout(Type t)
@@ -269,7 +269,7 @@ int TYPEhead_to_buffer(Type t, char *buffer, int length)
         return -1;
     }
     TYPE_out(t, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void TYPEhead_out(Type t)
@@ -295,7 +295,7 @@ int TYPEbody_to_buffer(Type t, char *buffer, int length)
         return -1;
     }
     TYPE_body_out(t, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void TYPEbody_out(Type t)

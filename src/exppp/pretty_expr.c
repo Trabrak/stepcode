@@ -129,7 +129,7 @@ void EXPR__out(Expression e, int paren, unsigned int previous_op)
             raw("]");
             break;
         case oneof_: {
-            int old_indent = indent2;
+            size_t old_indent = indent2;
             wrap("ONEOF ( ");
 
             if(exppp_linelength == indent2) {
@@ -422,7 +422,7 @@ int EXPRlength(Expression e)
     char buffer[10000];
     *buffer = '\0';
     EXPRstring(buffer, e);
-    return(strlen(buffer));
+    return((int)strlen(buffer));
 }
 
 char *EXPRto_string(Expression e)
@@ -441,7 +441,7 @@ int EXPRto_buffer(Expression e, char *buffer, int length)
         return -1;
     }
     EXPR_out(e, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void EXPRout(Expression e)

@@ -9,7 +9,7 @@
 #include "pretty_stmt.h"
 #include "pretty_func.h"
 
-void FUNC_out(Function fn, int level)
+void FUNC_out(Function fn, size_t level)
 {
     if(fn->u.func->builtin) {
         return;
@@ -20,7 +20,7 @@ void FUNC_out(Function fn, int level)
 
     raw("%*sFUNCTION %s", level, "", fn->symbol.name);
     if(fn->u.func->parameters) {
-        unsigned int param_indent = level + strlen("FUNCTION     ");
+        size_t param_indent = level + strlen("FUNCTION     ");
         raw("(\n");
         ALGargs_out(fn->u.func->parameters, param_indent);
         raw("\n%*s)", param_indent - exppp_continuation_indent, "");
@@ -54,7 +54,7 @@ int FUNCto_buffer(Function e, char *buffer, int length)
         return -1;
     }
     FUNC_out(e, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void FUNCout(Function f)

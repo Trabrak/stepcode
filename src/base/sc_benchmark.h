@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 typedef struct {
-    long virtMemKB, physMemKB, userMilliseconds, sysMilliseconds;
+    size_t virtMemKB, physMemKB, userMilliseconds, sysMilliseconds;
 } benchVals;
 
 /** return a benchVals struct with four current statistics for this process:

@@ -6,7 +6,7 @@
 
 const char *ClassName(const char *oldname)
 {
-    int i = 0, j = 0;
+    size_t i = 0, j = 0;
     static char newname [BUFSIZ];
     if(!oldname) {
         return ("");

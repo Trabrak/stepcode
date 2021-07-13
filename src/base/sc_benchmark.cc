@@ -55,7 +55,7 @@ benchVals getMemAndTime()
     // http://stackoverflow.com/a/282220/382458 and http://stackoverflow.com/a/64166/382458
     PROCESS_MEMORY_COUNTERS MemoryCntrs;
     FILETIME CreationTime, ExitTime, KernelTime, UserTime;
-    long page_size_kb = 1024;
+    size_t page_size_kb = 1024;
     ULARGE_INTEGER kTime, uTime;
 
     if(GetProcessMemoryInfo(GetCurrentProcess(), &MemoryCntrs, sizeof(MemoryCntrs))) {

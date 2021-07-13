@@ -513,7 +513,7 @@ Linked_List SEL_TYPEgetnew_attribute_list(const Type type)
  */
 void TYPEselect_inc_print_vars(const Type type, FILE *f, Linked_List dups)
 {
-    int size, j;
+    size_t size, j;
     Linked_List data_members = SELgetnew_dmlist(type);
     char dmname [BUFSIZ],
          classnm [BUFSIZ],
@@ -733,7 +733,7 @@ void TYPEselect_lib_print_part_one(const Type type, FILE *f,
 #define schema_name SCHEMAget_name(schema)
     char tdnm[BUFSIZ],
          nm[BUFSIZ];
-    int size = strlen(n) * 2 + 4, j;   /* size - for formatting output */
+    size_t size = strlen(n) * 2 + 4, j;   /* size - for formatting output */
 
     strncpy(tdnm, TYPEtd_name(type), BUFSIZ);
     strncpy(nm, SelectName(TYPEget_name(type)), BUFSIZ);

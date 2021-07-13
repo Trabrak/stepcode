@@ -7,8 +7,8 @@
 #include <sc_stdbool.h>
 #include <express/symbol.h>
 
-extern int indent2;                             /**< where continuation lines start */
-extern int curpos;                              /**< current line position (1 is first position) */
+extern size_t indent2;                             /**< where continuation lines start */
+extern size_t curpos;                           /**< current line position (1 is first position) */
 extern const int NOLEVEL;                       /**< unused-level indicator */
 
 extern Symbol error_sym;                        /**< only used when printing errors */
@@ -44,9 +44,9 @@ const char *real2exp(double r);
  */
 void breakLongStr(const char *in);
 
-int finish_buffer();
+size_t finish_buffer();
 int minimum(int a, int b, int c);
-int prep_buffer(char *buf, int len);
+int prep_buffer(char *buf, size_t len);
 int prep_string();
 void finish_file();
 void first_newline();

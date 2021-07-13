@@ -44,7 +44,7 @@ char *SCHEMAout(Schema s)
 #define PP_SMALL_BUF_SZ 80
     char buf[PP_SMALL_BUF_SZ];
     char *p;
-    int level = 0;
+    size_t level = 0;
     char **hp;
     bool described = false;
     if(exppp_print_to_stdout) {
@@ -173,7 +173,7 @@ int SCHEMAref_to_buffer(Schema s, char *buffer, int length)
     }
     REFout(s->u.schema->usedict, s->u.schema->use_schemas, "USE", 0);
     REFout(s->u.schema->refdict, s->u.schema->ref_schemas, "REFERENCE", 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void SCHEMAref_out(Schema s)

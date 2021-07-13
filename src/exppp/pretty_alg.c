@@ -13,7 +13,7 @@
 #include "pretty_scope.h"
 #include "pretty_alg.h"
 
-void ALGscope_out(Scope s, int level)
+void ALGscope_out(Scope s, size_t level)
 {
     SCOPEtypes_out(s, level);
     SCOPEentities_out(s, level);
@@ -24,7 +24,7 @@ void ALGscope_out(Scope s, int level)
 }
 
 /** last arg is not terminated with ; or \n */
-void ALGargs_out(Linked_List args, int level)
+void ALGargs_out(Linked_List args, size_t level)
 {
     Type previoustype = 0;
     bool previousVAR = false;

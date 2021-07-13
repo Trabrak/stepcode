@@ -31,7 +31,7 @@ sectionReader::sectionReader(lazyFileReader *parent, std::ifstream &file, std::s
 std::streampos sectionReader::findNormalString(const std::string &str, bool semicolon)
 {
     std::streampos found = -1, startPos = _file.tellg(), nextTry = startPos;
-    int i = 0, l = str.length();
+    size_t i = 0, l = str.length();
     char c;
 
     //i is reset every time a character doesn't match; if i == l, this means that we've found the entire string
@@ -317,7 +317,7 @@ SDAI_Application_instance *sectionReader::getRealInstance(const Registry *reg, l
         _file.seekg(begin);
         findNormalString("(");
         _file.seekg(_file.tellg() - std::streampos(1));
-        sev = inst->STEPread(instance, 0, _lazyFile->getInstMgr()->getAdapter(), _file, sName, true, false);
+        sev = inst->STEPread(static_cast<int>(instance), 0, _lazyFile->getInstMgr()->getAdapter(), _file, sName, true, false);
         //TODO do something with 'sev'
         inst->InitIAttrs();
     }
@@ -347,7 +347,7 @@ STEPcomplex *sectionReader::CreateSubSuperInstance(const Registry *reg, instance
     }
     // STEPComplex needs an array of strings or of char*. construct the latter using c_str() on all strings in the vector
     //FIXME: STEPComplex ctor should accept std::vector<std::string *> ?
-    const int s = typeNames.size();
+    const size_t s = typeNames.size();
     const char **names = new const char *[ s + 1 ];
     names[ s ] = 0;
     for(int i = 0; i < s; i++) {

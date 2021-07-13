@@ -187,7 +187,7 @@ static void EXPRESS_PATHinit()
         int done = 0;
         while(!done) {
             char *start;    /* start of current dir */
-            int length; /* length of dir */
+            size_t length; /* length of dir */
             char *slash;    /* last slash in dir */
             char save;  /* place to character from where we */
             /* temporarily null terminate */
@@ -342,7 +342,7 @@ void EXPRESSparse(Express model, FILE *fp, char *filename)
         /* get beginning of basename */
         char *start = slash ? (slash + 1) : filename;
 
-        int length = strlen(start);
+        size_t length = strlen(start);
 
         /* drop .exp suffix if present */
         if(dot && !strcmp(dot, ".exp")) {

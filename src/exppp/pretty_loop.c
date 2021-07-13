@@ -11,7 +11,7 @@
 #include "pretty_stmt.h"
 #include "pretty_loop.h"
 
-void LOOPout(struct Loop_ *loop, int level)
+void LOOPout(struct Loop_ *loop, size_t level)
 {
     Variable v;
 

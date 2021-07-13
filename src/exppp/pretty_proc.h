@@ -4,7 +4,7 @@
 #include <express/alg.h>
 
 char *PROCto_string(Procedure p);
-void PROC_out(Procedure p, int level);
+void PROC_out(Procedure p, size_t level);
 void PROCout(Procedure p);
 int PROCto_buffer(Procedure e, char *buffer, int length);
 

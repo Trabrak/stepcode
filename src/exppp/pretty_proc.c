@@ -24,7 +24,7 @@ int PROCto_buffer(Procedure e, char *buffer, int length)
         return -1;
     }
     PROC_out(e, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void PROCout(Procedure p)
@@ -34,7 +34,7 @@ void PROCout(Procedure p)
     finish_file();
 }
 
-void PROC_out(Procedure p, int level)
+void PROC_out(Procedure p, size_t level)
 {
     if(p->u.proc->builtin) {
         return;

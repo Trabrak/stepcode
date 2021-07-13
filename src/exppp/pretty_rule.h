@@ -4,7 +4,7 @@
 #include "../express/alg.h"
 
 char *RULEto_string(Rule r);
-void RULE_out(Rule r, int level);
+void RULE_out(Rule r, size_t level);
 void RULEout(Rule r);
 int RULEto_buffer(Rule e, char *buffer, int length);
 

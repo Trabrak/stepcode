@@ -3,6 +3,6 @@
 
 #include <express/stmt.h>
 
-void LOOPout(struct Loop_ *loop, int level);
+void LOOPout(struct Loop_ *loop, size_t level);
 
 #endif /* PRETTY_LOOP_H */

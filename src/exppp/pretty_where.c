@@ -26,7 +26,7 @@ int WHEREto_buffer(Linked_List w, char *buffer, int length)
         return -1;
     }
     WHERE_out(w, 0);
-    return(finish_buffer());
+    return((int)finish_buffer());
 }
 
 void WHEREout(Linked_List w)
@@ -36,7 +36,7 @@ void WHEREout(Linked_List w)
     finish_file();
 }
 
-void WHERE_out(Linked_List wheres, int level)
+void WHERE_out(Linked_List wheres, size_t level)
 {
     size_t max_indent;
     if(!wheres) {
