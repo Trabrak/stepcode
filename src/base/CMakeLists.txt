@@ -45,6 +45,7 @@ if(BUILD_STATIC_LIBS)
   if(WIN32)
     target_link_libraries(base-static psapi)
   endif()
+  target_compile_definitions(base-static PRIVATE SC_STATIC)
 endif()
 
 if(NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/judy/src")

@@ -141,7 +141,8 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 if(BUILD_STATIC_LIBS)
-  SC_ADDLIB(stepcore-static STATIC SOURCES ${LIBSTEPCORE_SRCS} LINK_LIBRARIES $<JOIN:${_libdeps},-static>-static)
+  SC_ADDLIB(stepcore-static STATIC SOURCES ${LIBSTEPCORE_SRCS} LINK_LIBRARIES $<JOIN:${_libdeps},-static >-static )
+  target_compile_definitions(stepcore-static PRIVATE SC_STATIC)
 endif()
 
 install(FILES ${SC_CLSTEPCORE_HDRS}

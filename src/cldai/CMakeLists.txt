@@ -45,6 +45,7 @@ endif()
 
 if(BUILD_STATIC_LIBS)
   SC_ADDLIB(stepdai-static STATIC SOURCES ${LIBSTEPDAI_SRCS} LINK_LIBRARIES $<JOIN:${_libdeps},-static >-static)
+  target_compile_definitions(stepdai-static PRIVATE SC_STATIC)
 endif()
 
 install(FILES ${SC_CLDAI_HDRS}

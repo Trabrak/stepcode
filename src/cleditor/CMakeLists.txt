@@ -36,6 +36,7 @@ endif()
 
 if(BUILD_STATIC_LIBS)
   SC_ADDLIB(stepeditor-static STATIC SOURCES ${LIBSTEPEDITOR_SRCS} LINK_LIBRARIES stepcore-static stepdai-static steputils-static base-static)
+  target_compile_definitions(stepeditor-static PRIVATE SC_STATIC)
 endif()
 
 install(FILES ${SC_CLEDITOR_HDRS}

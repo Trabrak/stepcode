@@ -36,14 +36,17 @@ if(BUILD_SHARED_LIBS)
   if(WIN32)
     target_compile_definitions(libexppp PRIVATE SC_EXPPP_DLL_EXPORTS)
   endif()
+  SC_ADDEXEC(exppp SOURCES ${EXPPP_SOURCES} LINK_LIBRARIES libexppp express base)
 endif()
 
 if(BUILD_STATIC_LIBS)
   SC_ADDLIB(libexppp-static STATIC SOURCES ${LIBEXPPP_SOURCES} LINK_LIBRARIES express-static base-static)
+  target_compile_definitions(libexppp-static PRIVATE SC_STATIC)
   set_target_properties(libexppp-static PROPERTIES PREFIX "")
+  SC_ADDEXEC(exppp-static SOURCES ${EXPPP_SOURCES} LINK_LIBRARIES libexppp-static express-static base-static)
+  target_compile_definitions(exppp-static PRIVATE SC_STATIC)
 endif()
 
-SC_ADDEXEC(exppp SOURCES ${EXPPP_SOURCES} LINK_LIBRARIES libexppp express base)
 
 if(SC_ENABLE_TESTING)
   add_subdirectory(test)

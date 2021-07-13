@@ -37,7 +37,14 @@ include_directories(
   ${SC_SOURCE_DIR}/src/base
   )
 
-SC_ADDEXEC(exp2cxx SOURCES ${exp2cxx_SOURCES} LINK_LIBRARIES libexppp express base)
+if(BUILD_SHARED_LIBS)
+  SC_ADDEXEC(exp2cxx SOURCES ${exp2cxx_SOURCES} LINK_LIBRARIES libexppp express base)
+endif()
+
+if(BUILD_STATIC_LIBS AND NOT BUILD_SHARED_LIBS)
+  SC_ADDEXEC(exp2cxx SOURCES ${exp2cxx_SOURCES} LINK_LIBRARIES libexppp-static express-static base-static)
+  target_compile_definitions(exp2cxx PRIVATE SC_STATIC)
+endif()
 
 if(SC_ENABLE_TESTING)
   add_subdirectory(test)

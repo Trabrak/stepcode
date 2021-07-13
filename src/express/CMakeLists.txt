@@ -53,32 +53,43 @@ set(EXPRESS_SOURCES
   factory.c
   )
 
-add_library(express-obj OBJECT ${EXPRESS_SOURCES})
-add_dependencies(express-obj base)
-if(MSVC)
-  set_property(TARGET express-obj APPEND PROPERTY COMPILE_DEFINITIONS "SC_EXPRESS_DLL_EXPORTS")
-endif(MSVC)
 
 
-add_library(express SHARED ${EXPRESS_SOURCES})
-target_link_libraries(express base)
-if(OPENBSD)
-  set_target_properties(express PROPERTIES VERSION ${SC_VERSION_MAJOR}.${SC_VERSION_MINOR})
-else(OPENBSD)
-  set_target_properties(express PROPERTIES VERSION ${SC_VERSION} SOVERSION ${SC_VERSION_MAJOR})
-endif(OPENBSD)
-if(APPLE)
-  set_property(TARGET express APPEND PROPERTY LINK_FLAGS "-flat_namespace -undefined suppress")
-endif(APPLE)
-install(TARGETS express
-  RUNTIME DESTINATION ${BIN_DIR}
-  LIBRARY DESTINATION ${LIB_DIR}
-  ARCHIVE DESTINATION ${LIB_DIR})
+if(BUILD_SHARED_LIBS)
+  add_library(express-obj OBJECT ${EXPRESS_SOURCES})
+  add_dependencies(express-obj base)
+  if(MSVC)
+    set_property(TARGET express-obj APPEND PROPERTY COMPILE_DEFINITIONS "SC_EXPRESS_DLL_EXPORTS")
+  endif(MSVC)
+endif()
+if(BUILD_STATIC_LIBS)
+  add_library(express-obj-static OBJECT ${EXPRESS_SOURCES})
+  add_dependencies(express-obj-static base-static)
+  target_compile_definitions(express-obj-static PRIVATE SC_STATIC)
+endif()
 
-if(MSVC)
-  set_property(TARGET express APPEND PROPERTY COMPILE_DEFINITIONS "SC_EXPRESS_DLL_EXPORTS")
-  set_property(TARGET express APPEND PROPERTY INTERFACE_COMPILE_DEFINITIONS "SC_EXPRESS_DLL_IMPORTS")
-endif(MSVC)
+
+if(BUILD_SHARED_LIBS)
+  add_library(express SHARED ${EXPRESS_SOURCES})
+  target_link_libraries(express base)
+  if(OPENBSD)
+    set_target_properties(express PROPERTIES VERSION ${SC_VERSION_MAJOR}.${SC_VERSION_MINOR})
+  else(OPENBSD)
+    set_target_properties(express PROPERTIES VERSION ${SC_VERSION} SOVERSION ${SC_VERSION_MAJOR})
+  endif(OPENBSD)
+  if(APPLE)
+    set_property(TARGET express APPEND PROPERTY LINK_FLAGS "-flat_namespace -undefined suppress")
+  endif(APPLE)
+  install(TARGETS express
+    RUNTIME DESTINATION ${BIN_DIR}
+    LIBRARY DESTINATION ${LIB_DIR}
+    ARCHIVE DESTINATION ${LIB_DIR})
+
+  if(MSVC)
+    set_property(TARGET express APPEND PROPERTY COMPILE_DEFINITIONS "SC_EXPRESS_DLL_EXPORTS")
+    set_property(TARGET express APPEND PROPERTY INTERFACE_COMPILE_DEFINITIONS "SC_EXPRESS_DLL_IMPORTS")
+  endif(MSVC)
+endif(BUILD_SHARED_LIBS)
 
 if (BUILD_STATIC_LIBS)
   add_library(express-static STATIC ${EXPRESS_SOURCES})
@@ -86,7 +97,8 @@ if (BUILD_STATIC_LIBS)
     RUNTIME DESTINATION ${BIN_DIR}
     LIBRARY DESTINATION ${LIB_DIR}
     ARCHIVE DESTINATION ${LIB_DIR})
-endif (BUILD_STATIC_LIBS)
+  target_compile_definitions(express-static PRIVATE SC_STATIC)
+endif(BUILD_STATIC_LIBS)
 
 # TODO
 # Currently, fedex.c provides the main() for multiple programs. These programs
@@ -101,13 +113,26 @@ set(CHECK_EXPRESS_SOURCES
   fedex.c
   inithook.c
  )
-add_executable(check-express ${CHECK_EXPRESS_SOURCES})
-target_link_libraries(check-express express base)
-install(TARGETS check-express
-  RUNTIME DESTINATION ${BIN_DIR}
-  LIBRARY DESTINATION ${LIB_DIR}
-  ARCHIVE DESTINATION ${LIB_DIR})
 
+
+if(BUILD_SHARED_LIBS)
+  add_executable(check-express ${CHECK_EXPRESS_SOURCES})
+  target_link_libraries(check-express express base)
+  install(TARGETS check-express
+    RUNTIME DESTINATION ${BIN_DIR}
+    LIBRARY DESTINATION ${LIB_DIR}
+    ARCHIVE DESTINATION ${LIB_DIR})
+endif(BUILD_SHARED_LIBS)
+
+if(BUILD_STATIC_LIBS)
+  add_executable(check-express-static ${CHECK_EXPRESS_SOURCES})
+  target_link_libraries(check-express-static express-static base-static)
+  install(TARGETS check-express-static
+    RUNTIME DESTINATION ${BIN_DIR}
+    LIBRARY DESTINATION ${LIB_DIR}
+    ARCHIVE DESTINATION ${LIB_DIR})
+  target_compile_definitions(check-express-static PRIVATE SC_STATIC)  
+endif(BUILD_STATIC_LIBS)
 
 if(SC_ENABLE_TESTING)
   add_subdirectory(test)
