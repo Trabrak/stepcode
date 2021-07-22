@@ -39,6 +39,10 @@ if(BUILD_STATIC_LIBS)
   target_compile_definitions(stepeditor-static PRIVATE SC_STATIC)
 endif()
 
+if(MSVC)
+  add_compile_options("/Zi")
+endif(MSVC)
+
 install(FILES ${SC_CLEDITOR_HDRS}
   DESTINATION ${INCLUDE_DIR}/stepcode/cleditor)
 

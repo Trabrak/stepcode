@@ -40,6 +40,10 @@ if(BUILD_STATIC_LIBS)
   endif()
 endif()
 
+if(MSVC)
+  add_compile_options("/Zi")
+endif(MSVC)
+
 install(FILES ${SC_CLUTILS_HDRS}
   DESTINATION ${INCLUDE_DIR}/stepcode/clutils)
 

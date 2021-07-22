@@ -100,6 +100,10 @@ if (BUILD_STATIC_LIBS)
   target_compile_definitions(express-static PRIVATE SC_STATIC)
 endif(BUILD_STATIC_LIBS)
 
+if(MSVC)
+  add_compile_options("/Zi")
+endif(MSVC)
+
 # TODO
 # Currently, fedex.c provides the main() for multiple programs. These programs
 # provide custom behavior by defining EXPRESSinit_init (called by fedex.c's

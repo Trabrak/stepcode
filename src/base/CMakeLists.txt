@@ -48,6 +48,10 @@ if(BUILD_STATIC_LIBS)
   target_compile_definitions(base-static PRIVATE SC_STATIC)
 endif()
 
+if(MSVC)
+  add_compile_options("/Zi")
+endif(MSVC)
+
 if(NOT IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/judy/src")
   message("Judy array source code not found. Downloading (don't sweat, it's public domain)...")
   file(DOWNLOAD "http://github.com/mpictor/judy-template/archive/master.tar.gz"

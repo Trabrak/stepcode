@@ -145,6 +145,10 @@ if(BUILD_STATIC_LIBS)
   target_compile_definitions(stepcore-static PRIVATE SC_STATIC)
 endif()
 
+if(MSVC)
+  add_compile_options("/Zi")
+endif(MSVC)
+
 install(FILES ${SC_CLSTEPCORE_HDRS}
   DESTINATION ${INCLUDE_DIR}/stepcode/clstepcore)
 

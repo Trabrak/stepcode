@@ -49,6 +49,10 @@ if(BUILD_STATIC_LIBS)
   target_compile_definitions(lazy_test-static PRIVATE NO_REGISTRY)
 endif()
 
+if(MSVC)
+  add_compile_options("/Zi")
+endif(MSVC)
+
 install(FILES ${SC_CLLAZYFILE_HDRS}
   DESTINATION ${INCLUDE_DIR}/stepcode/cllazyfile)
 
