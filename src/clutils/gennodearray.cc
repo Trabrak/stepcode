@@ -50,7 +50,7 @@ GenNodeArray::~GenNodeArray()
 
 int GenNodeArray::Index(GenericNode **gn)
 {
-    return ((gn - _buf) / sizeof(GenericNode *));
+    return (int)((size_t)(gn - _buf) / sizeof(GenericNode *));
 }
 
 void GenNodeArray::Append(GenericNode *gn)

@@ -41,14 +41,14 @@ lazyInstMgr::~lazyInstMgr()
 sectionID lazyInstMgr::registerDataSection(lazyDataSectionReader *sreader)
 {
     _dataSections.push_back(sreader);
-    return _dataSections.size() - 1;
+    return static_cast<sectionID>(_dataSections.size()) - (sectionID)1;
 }
 
 void lazyInstMgr::addLazyInstance(namedLazyInstance inst)
 {
     _lazyInstanceCount++;
     assert(inst.loc.begin > 0 && inst.loc.instance > 0);
-    int len = strlen(inst.name);
+    int len = static_cast<int>(strlen(inst.name));
     if(len > _longestTypeNameLen) {
         _longestTypeNameLen = len;
         _longestTypeName = inst.name;
@@ -106,7 +106,7 @@ void lazyInstMgr::openFile(std::string fname)
     size_t i = _files.size();
     _files.push_back((lazyFileReader *) 0);
     ///FIXME end atomic op
-    lazyFileReader *lfr = new lazyFileReader(fname, this, i);
+    lazyFileReader *lfr = new lazyFileReader(fname, this, static_cast<fileID>(i));
     _files[i] = lfr;
     /// TODO resolve inverse attr references
     //between instances, or eDesc --> inst????
@@ -131,7 +131,7 @@ SDAI_Application_instance *lazyInstMgr::loadInstance(instanceID id, bool reSeek)
             case 1:
                 long int off;
                 ps = cv->at(0);
-                off = ps & 0xFFFFFFFFFFFFULL;
+                off = static_cast<long>(ps & 0xFFFFFFFFFFFFULL);
                 sid = ps >> 48;
                 assert(_dataSections.size() > sid);
                 if(reSeek) {

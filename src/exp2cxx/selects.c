@@ -1614,82 +1614,92 @@ void TYPEselect_lib_StrToVal(const Type type, FILE *f)
             "(const char * str, InstMgrBase * instances)"
             "\n{\n  (void)str;\n  (void)instances;\n", n);
 
-    fprintf(f, "  switch (base_type)  {\n");
-    LISTdo(data_members, t, Type)
-    /*  fprintf (f, "  case %s :  \n",  FundamentalType (t, 0));*/
+	bool do_switch = (data_members != NULL && data_members->mark != NULL && data_members->mark->data != NULL);
 
-    switch(TYPEget_body(t)->type) {
+	if (do_switch)
+	{
+		fprintf(f, "  switch (base_type)  {\n");
+		LISTdo(data_members, t, Type)
+			/*  fprintf (f, "  case %s :  \n",  FundamentalType (t, 0));*/
 
-        case real_:
-        case integer_:
-        case number_:
-        case select_:
-            /*  if it\'s a number, use STEPread_content - done in Select class  */
-            /*  if it\'s a select, use STEPread_content - done in Select class  */
-            /*    fprintf (f, "\t// done in Select class\n\treturn SEVERITY_NULL;\n");*/
-            break;
+			switch (TYPEget_body(t)->type) {
 
-        case entity_:
-            /*  if it\'s an entity, use AssignEntity - done in Select class  */
-            /*    fprintf (f, "\t// done in Select class\n\treturn SEVERITY_NULL;\n");*/
+			case real_:
+			case integer_:
+			case number_:
+			case select_:
+				/*  if it\'s a number, use STEPread_content - done in Select class  */
+				/*  if it\'s a select, use STEPread_content - done in Select class  */
+				/*    fprintf (f, "\t// done in Select class\n\treturn SEVERITY_NULL;\n");*/
+				break;
 
-            break;
-        case binary_:
-        case logical_:
-        case boolean_:
-        case enumeration_:
-            if(!enum_cnt) {
-                /*  if there\'s more than one enumeration they are done in Select class  */
-                fprintf(f, "  case %s :  \n",  FundamentalType(t, 0));
-                fprintf(f,
-                        "    return _%s.StrToVal (str, &_error);\n",
-                        SEL_ITEMget_dmname(t));
-            } else {
-                fprintf(f, "  //  case %s :  done in Select class\n", FundamentalType(t, 0));
-            }
-            ++enum_cnt;
-            break;
+			case entity_:
+				/*  if it\'s an entity, use AssignEntity - done in Select class  */
+				/*    fprintf (f, "\t// done in Select class\n\treturn SEVERITY_NULL;\n");*/
 
-        case string_:
-            fprintf(f, "  case %s :  \n",    FundamentalType(t, 0));
-            fprintf(f,
-                    "    return _%s.StrToVal (str);\n",
-                    SEL_ITEMget_dmname(t));
-            break;
+				break;
+			case binary_:
+			case logical_:
+			case boolean_:
+			case enumeration_:
+				if (!enum_cnt) {
+					/*  if there\'s more than one enumeration they are done in Select class  */
+					fprintf(f, "  case %s :  \n", FundamentalType(t, 0));
+					fprintf(f,
+						"    return _%s.StrToVal (str, &_error);\n",
+						SEL_ITEMget_dmname(t));
+				}
+				else {
+					fprintf(f, "  //  case %s :  done in Select class\n", FundamentalType(t, 0));
+				}
+				++enum_cnt;
+				break;
 
-        case aggregate_:
-        case array_:
-        case bag_:
-        case set_:
-        case list_:
-            fprintf(f, "  case %s :  \n",    FundamentalType(t, 0));
-            fprintf(f, "    return _%s%sStrToVal (str, &_error, %s -> AggrElemTypeDescriptor ());\n", SEL_ITEMget_dmname(t),
-                    ((t->u.type->body->base) ? "->" : "."),
-                    TYPEtd_name(t));
-            break;
+			case string_:
+				fprintf(f, "  case %s :  \n", FundamentalType(t, 0));
+				fprintf(f,
+					"    return _%s.StrToVal (str);\n",
+					SEL_ITEMget_dmname(t));
+				break;
 
-        default:
-            /*  otherwise use StrToVal on the contents to check the format  */
-            fprintf(f, "  case %s :  \n",    FundamentalType(t, 0));
-            fprintf(f,
-                    "    return _%s -> StrToVal (str, instances);\n",
-                    SEL_ITEMget_dmname(t));
-    }
-    LISTod;
+			case aggregate_:
+			case array_:
+			case bag_:
+			case set_:
+			case list_:
+				fprintf(f, "  case %s :  \n", FundamentalType(t, 0));
+				fprintf(f, "    return _%s%sStrToVal (str, &_error, %s -> AggrElemTypeDescriptor ());\n", SEL_ITEMget_dmname(t),
+					((t->u.type->body->base) ? "->" : "."),
+					TYPEtd_name(t));
+				break;
 
-    fprintf(f, "  default:  // should never be here - done in Select class\n");
-    PRINT_SELECTBUG_WARNING(f) ;
-    fprintf(f, "#ifdef __SUNCPLUSPLUS__\n"
-            "std::cerr << str << \"  \" << instances << std::endl;\n"
-            "#endif\n");
-    fprintf(f, "    return SEVERITY_WARNING;\n  }\n");
+			default:
+				/*  otherwise use StrToVal on the contents to check the format  */
+				fprintf(f, "  case %s :  \n", FundamentalType(t, 0));
+				fprintf(f,
+					"    return _%s -> StrToVal (str, instances);\n",
+					SEL_ITEMget_dmname(t));
+			}
+		LISTod;
 
-    LISTfree(data_members);
-    fprintf(f,
-            "#ifdef __GNUG__\n"
-            "\n  return SEVERITY_NULL;\n"
-            "#endif"
-            "\n}\n");
+		fprintf(f, "  default:  // should never be here - done in Select class\n");
+		PRINT_SELECTBUG_WARNING(f);
+		fprintf(f, "#ifdef __SUNCPLUSPLUS__\n"
+			"std::cerr << str << \"  \" << instances << std::endl;\n"
+			"#endif\n");
+
+		}
+		fprintf(f, "    return SEVERITY_WARNING;\n  }\n");
+
+		LISTfree(data_members);
+		if (do_switch)
+		{
+			fprintf(f,
+				"#ifdef __GNUG__\n"
+				"\n  return SEVERITY_NULL;\n"
+				"#endif"
+				"\n}\n");
+		}
 }
 
 void TYPEselect_lib_virtual(const Type type, FILE *f)

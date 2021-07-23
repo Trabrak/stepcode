@@ -463,7 +463,7 @@ class ComplexCollect
         int supports(EntNode *);
         bool externMapping(const char *ent)
         {
-            return (clists ? clists->isDependent(ent) : 0);
+            return (clists ? clists->isDependent(ent) : 0) != 0;
         }
         // One of our clists shows that ent will have to be instantiated
         // using external mapping (see Part 21, sect 11.2.5.1).

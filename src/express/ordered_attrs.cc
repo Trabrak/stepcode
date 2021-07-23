@@ -27,7 +27,7 @@ void populateAttrList(oaList &list, Entity ent)
     //derivation check only - leave deduplication for later
     LISTdo(ent->u.entity->attributes, attr, Variable) {
         bool unique = true;
-        for(unsigned int i = attrCount; i < list.size(); i++) {
+        for(unsigned int i = (unsigned)attrCount; i < (unsigned)list.size(); i++) {
             if(0 == strcasecmp(attr->name->symbol.name, list[i]->attr->name->symbol.name)) {
                 // an attr by this name exists in a supertype
                 // originally printed a warning here, but that was misleading - they have more uses than I thought

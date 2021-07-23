@@ -434,7 +434,7 @@ bool SCANread(void)
                 SCANbuffer.readEof = true;
             }
 #ifdef keep_nul
-            SCANbuffer.numRead = numRead;
+            SCANbuffer.numRead = (int)numRead;
 #else
             SCANbuffer.text[numRead] = '\0';
 #endif

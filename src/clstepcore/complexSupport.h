@@ -138,7 +138,7 @@ class SC_CORE_EXPORT EntNode
         }
         void multSuprs(int j)
         {
-            multSupers = j;
+            multSupers = (j != 0);
         }
         void sort(EntNode **);
 
@@ -243,7 +243,7 @@ class SC_CORE_EXPORT SimpleList : public EntList
             name[sizeof(name) - 1] = '\0';   /* sanity */
         }
         ~SimpleList() {}
-        int operator== (const char *nm)
+        bool operator== (const char *nm)
         {
             return (strcmp(name, nm) == 0);
         }

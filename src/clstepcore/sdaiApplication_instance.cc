@@ -55,7 +55,7 @@ SDAI_Application_instance::SDAI_Application_instance()
 SDAI_Application_instance::SDAI_Application_instance(int fileid, int complex)
     :  _cur(0),
        eDesc(NULL),
-       _complex(complex),
+       _complex(complex != 0),
        STEPfile_id(fileid),
        p21Comment(std::string("")),
        headMiEntity(0),
@@ -704,7 +704,9 @@ SDAI_Application_instance *ReadEntityRef(istream &in, ErrorDescriptor *err, cons
             err->AppendToDetailMsg("Use of @ instead of # to identify entity.\n");
             err->GreaterSeverity(SEVERITY_WARNING);
             // no break statement here on purpose
+			#ifndef WIN32
             [[gnu::fallthrough]];
+			#endif
         case '#': {
             int id = -1;
             in >>  id;

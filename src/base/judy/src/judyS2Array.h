@@ -108,9 +108,9 @@ class judyS2Array
         bool insert(const char *key, JudyValue value, unsigned int keyLen = 0)
         {
             if(keyLen == 0) {
-                keyLen = strlen(key);
+                keyLen = static_cast<unsigned int>(strlen(key));
             } else {
-                assert(keyLen == strlen(key));
+                assert(keyLen == static_cast<unsigned int>(strlen(key)));
             }
             assert(keyLen <= _maxKeyLen);
             _lastSlot = (vector **) judy_cell(_judyarray, (const unsigned char *)key, keyLen);
@@ -181,9 +181,9 @@ class judyS2Array
         cvector *find(const char *key, unsigned int keyLen = 0)
         {
             if(keyLen == 0) {
-                keyLen = strlen(key);
+                keyLen = static_cast<unsigned int>(strlen(key));
             } else {
-                assert(keyLen == strlen(key));
+                assert(keyLen == static_cast<unsigned int>(strlen(key)));
             }
             assert(keyLen <= _maxKeyLen);
             _lastSlot = (vector **) judy_slot(_judyarray, (const unsigned char *) key, keyLen);

@@ -51,7 +51,7 @@ const namedLazyInstance lazyP21DataSectionReader::nextInstance()
     namedLazyInstance i;
 
     i.refs = 0;
-    i.loc.begin = _file.tellg();
+    i.loc.begin = static_cast<long>(_file.tellg());
     i.loc.instance = readInstanceNumber();
     if((_file.good()) && (i.loc.instance > 0)) {
         skipWS();

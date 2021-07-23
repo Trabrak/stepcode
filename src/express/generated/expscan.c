@@ -341,7 +341,7 @@ buf_concat(struct Buf *dest, const struct Buf *src)
 
 /* Appends n characters in str to buf. */
 struct Buf *
-buf_strnappend(struct Buf *buf, const char *str, size_t n)
+buf_strnappend(struct Buf *buf, const char *str, int n)
 {
     buf_append(buf, str, n + 1);
 
@@ -355,7 +355,7 @@ buf_strnappend(struct Buf *buf, const char *str, size_t n)
 struct Buf *
 buf_strappend(struct Buf *buf, const char *str)
 {
-    return buf_strnappend(buf, str, strlen(str));
+    return buf_strnappend(buf, str, (int)strlen(str));
 }
 
 /* appends "#define str def\n" */
@@ -448,11 +448,11 @@ buf_append(struct Buf *buf, const void *ptr, int n_elem)
     /* May need to alloc more. */
     if(n_elem + buf->nelts > buf->nmax) {
         /* exact amount needed... */
-        n_alloc = (n_elem + buf->nelts) * buf->elt_size;
+        n_alloc = (n_elem + buf->nelts) * (int)buf->elt_size;
 
         /* ...plus some extra */
         if(((n_alloc * buf->elt_size) % 512) != 0 && buf->elt_size < 512) {
-            n_alloc += (512 - ((n_alloc * buf->elt_size) % 512)) / buf->elt_size;
+            n_alloc += (512 - ((n_alloc * (int)buf->elt_size) % 512)) / (int)buf->elt_size;
         }
         if(!buf->elts) {
             buf->elts = allocate_array(n_alloc, buf->elt_size);
@@ -588,7 +588,7 @@ bufferFill(perplex_t scanner, size_t n)
         memmove(bufFirst, scannerFirst, bytesInUse);
 
         /* update number of elements */
-        buf->nelts = bytesInUse / buf->elt_size;
+        buf->nelts = (int)(bytesInUse / buf->elt_size);
 
         /* update markers */
         shiftSize = (size_t)scannerFirst - (size_t)bufFirst;
@@ -603,7 +603,7 @@ bufferFill(perplex_t scanner, size_t n)
 static char *
 getTokenText(perplex_t scanner)
 {
-    int tokenChars = scanner->cursor - scanner->tokenStart;
+    int tokenChars = (int)(scanner->cursor - scanner->tokenStart);
 
     if(scanner->tokenText != NULL) {
         free(scanner->tokenText);

@@ -81,21 +81,21 @@ void Schema::GenerateExpress(ostream &out) const
         out << endl << "(* *************RULES************* *)" << endl;
         count = _global_rules->Count();
         for(i = 0; i <  count; i++) {
-            out << endl << (*_global_rules)[i]->rule_text_() << endl;
+            out << endl << (*_global_rules)[static_cast<int>(i)]->rule_text_() << endl;
         }
     }
     if(!_function_list.empty()) {
         out << "(* *************FUNCTIONS************* *)" << endl;
         count = _function_list.size();
         for(i = 0; i <  count; i++) {
-            out << endl << _function_list[i] << endl;
+            out << endl << _function_list[static_cast<int>(i)] << endl;
         }
     }
     if(!_procedure_list.empty()) {
         out << "(* *************PROCEDURES************* *)" << endl;
         count = _procedure_list.size();
         for(i = 0; i <  count; i++) {
-            out << endl << _procedure_list[i] << endl;
+            out << endl << _procedure_list[static_cast<int>(i)] << endl;
         }
     }
     out << endl << "END_SCHEMA;" << endl;

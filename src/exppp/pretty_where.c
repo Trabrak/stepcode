@@ -72,7 +72,7 @@ void WHERE_out(Linked_List wheres, size_t level)
             /* no label */
             raw("%*s%-*s  ", level, "", max_indent, "");
         }
-        EXPR_out(w->expr, max_indent);
+        EXPR_out(w->expr, (int)max_indent);
         raw(";\n");
     }
     LISTod

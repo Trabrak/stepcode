@@ -114,7 +114,7 @@ class SC_LAZYFILE_EXPORT lazyInstMgr
             if(!v) {
                 return 0;
             }
-            return v->size();
+            return static_cast<unsigned int>(v->size());
         }
         instancesLoaded_t *getHeaderInstances(fileID file)
         {
@@ -136,7 +136,7 @@ class SC_LAZYFILE_EXPORT lazyInstMgr
         /// get the number of data sections that have been identified
         unsigned int countDataSections()
         {
-            return _dataSections.size();
+            return static_cast<unsigned int>(_dataSections.size());
         }
 
         ///builds the registry using the given initFunct
@@ -204,7 +204,7 @@ class SC_LAZYFILE_EXPORT lazyInstMgr
                 }
                 positionAndSection ps = cv->at(0);
                 //extract p, s, call
-                long int off = ps & 0xFFFFFFFFFFFFULL;
+                long off = static_cast<long>(ps & 0xFFFFFFFFFFFFULL);
                 sectionID sid = ps >> 48;
                 return _dataSections[sid]->getType(off);
             }

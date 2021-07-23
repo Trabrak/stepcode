@@ -108,7 +108,7 @@ int count_newlines(char *s)
 /** true if last char through exp_output was a space */
 static bool printedSpaceLast = false;
 
-void exp_output(char *buf, size_t len)
+void exp_output(char *buf, unsigned len)
 {
     FILE *fp = (exppp_fp ? exppp_fp : stdout);
 
@@ -116,7 +116,7 @@ void exp_output(char *buf, size_t len)
     printedSpaceLast = (*(buf + len - 1) == ' ');
     if(exppp_buf) {
         /* output to string */
-        if(len > exppp_buflen) {
+        if((size_t)len > exppp_buflen) {
             /* should provide flag to enable complaint */
             /* for now, just ignore */
             return;
@@ -126,8 +126,8 @@ void exp_output(char *buf, size_t len)
         exppp_buflen -= len;
     } else {
         /* output to file */
-        size_t out = fwrite(buf, (size_t)1, len, fp);
-        if(out != len) {
+        size_t out = fwrite(buf, (size_t)1, (size_t)len, fp);
+        if(out != (size_t)len) {
             const char *err = "%s:%u - ERROR: write operation on output file failed. Wanted %u bytes, wrote %u.";
             fprintf(stderr, err, __FILE__, __LINE__, len, out);
             abort();
@@ -166,7 +166,7 @@ void wrap(const char *fmt, ...)
         /* move to new continuation line */
         char line[1000];
         sprintf(line, "\n%zu%s", indent2, "");
-        exp_output(line, (size_t)1 + indent2);
+        exp_output(line, (unsigned)1 + (unsigned)indent2);
 
         curpos = indent2;       /* reset current position */
     }
@@ -176,7 +176,7 @@ void wrap(const char *fmt, ...)
         start++;
         len--;
     }
-    exp_output(start, len);
+    exp_output(start, (unsigned)len);
 
     if(len) {
         /* reset cur position based on last newline seen */
@@ -201,7 +201,7 @@ void raw(const char *fmt, ...)
 
     len = strlen(buf);
 
-    exp_output(buf, len);
+    exp_output(buf, (unsigned)len);
 
     if(len) {
         /* reset cur position based on last newline seen */
